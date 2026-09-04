@@ -1,0 +1,4 @@
+data/
+.nbb/
+node_modules/
+.cpcache/
