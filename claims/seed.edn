@@ -1,0 +1,42 @@
+;; hakobi claims seed — representative claims for the verification heartbeat.
+;; provenance: every row here is :representative (illustrative structure, NOT a
+;; measured fact). Real measured claims arrive via a future measurement-path
+;; ADR and carry :authoritative with a cited measurement. Same discipline as
+;; mio's seed.edn (mixed provenance, default representative).
+[{:id "claim-seed-001"
+  :name "tokyo-edge-cdn-stream"
+  :delivery-class "cdn-stream"
+  :source-actor "actor-edge-tokyo-01"
+  :baseline-path "origin-direct-rtt-120ms"
+  :additionality 0.8
+  :measurement-source :dual-endpoint-signed
+  :double-count-key "seg-0001::receiver-77"
+  :leakage 0.1
+  :bytes-delivered 1.0e9
+  :latency-ms-claimed 18
+  :sourcing :representative}
+ {:id "claim-seed-002"
+  :name "osaka-relay-transit"
+  :delivery-class "relay-transit"
+  :source-actor "actor-relay-osaka-02"
+  :baseline-path "default-routing-85ms"
+  :additionality 0.6
+  :measurement-source :relay-chain-signed
+  :double-count-key "seg-0002::receiver-41"
+  :leakage 0.15
+  :bytes-delivered 4.0e8
+  :latency-ms-claimed 23
+  :sourcing :representative}
+ {:id "claim-seed-003"
+  :name "sybil-self-loop"
+  :delivery-class "cdn-stream"
+  :source-actor "actor-edge-tokyo-01"
+  :baseline-path ""
+  :additionality 0.9
+  :measurement-source :self-report
+  :double-count-key "seg-0003::receiver-self"
+  :leakage 0.9
+  :bytes-delivered 9.0e9
+  :latency-ms-claimed 5
+  :sourcing :representative
+  :note "structure demonstration — self-traffic claim must NOT verify"}]
