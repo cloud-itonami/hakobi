@@ -1,28 +1,57 @@
 #!/usr/bin/env nbb
-;; hakobi test runner — same contract as the superproject's
-;; scripts/nbb-run-tests.cljs (ADR-2607173000): exit 0 iff fail+error == 0.
+;; hakobi test runner — contract: exit 0 iff fail+error == 0 (ADR-2607173000).
 ;;
 ;; Usage (from this repo):
-;;   nbb --classpath src:test bin/run-tests.cljs hakobi.kernel-test
+;;   nbb --classpath src:test:scripts bin/run-tests.cljs hakobi.kernel-test …
 ;;
-;; nbb measured gotcha (2026-09-04): `require` inside `doseq`/`let` does NOT
-;; resolve async loads — the top-level `(apply require [...])` form does.
-;; Keep the require at top level or the namespace "won't be found" at
-;; run-tests despite printing `Testing <ns>`.
-(require '[clojure.test :as t]
-         '[clojure.string :as str])
+;; nbb measured gotchas (2026-09-04, red-proven):
+;;  - `t/run-tests` under nbb prints a summary but RETURNS NIL, and
+;;    `t/successful?` is unreliable after it — so the superproject's
+;;    JVM-style `(exit (if (pos? fail+error) 1 0))` pattern always exits 0.
+;;    A 1-failure run exited 0 with that shape (measured).
+;;  - `require` inside `doseq`/`let` does NOT resolve async loads; the
+;;    top-level `(apply require [...])` form does.
+;;  → This runner therefore binds its own counting `t/report` and runs
+;;    `t/test-vars` directly, counting :fail/:error events. Red path
+;;    proven: a forced failure exits 1.
+(require '[clojure.test :as t])
 
 (def ^:private argv (vec *command-line-args*))
 
 (when (empty? argv)
   (binding [*out* *err*]
-    (println "usage: nbb --classpath src:test bin/run-tests.cljs <ns>…"))
+    (println "usage: nbb --classpath src:test:scripts bin/run-tests.cljs <ns>…"))
   (.exit (.-process js/globalThis) 2))
 
 (def ^:private nss (mapv symbol argv))
 
 (apply require nss)
 
-(let [{:keys [fail error]} (apply t/run-tests nss)
-      bad (+ (or fail 0) (or error 0))]
-  (.exit (.-process js/globalThis) (if (pos? bad) 1 0)))
+(def ^:private pass (atom 0))
+(def ^:private fail (atom 0))
+(def ^:private err  (atom 0))
+
+(defn- counting-report [m]
+  (case (:type m)
+    :pass  (swap! pass inc)
+    :fail  (swap! fail inc)
+    :error (swap! err inc)
+    nil))
+
+(defn- test-vars-of [ns-sym]
+  (->> (ns-publics ns-sym)
+       vals
+       (filter #(-> % meta :test))
+       (sort-by #(str (:name (meta %))))))
+
+(def ^:private results
+  (doseq [ns-sym nss]
+    (println "Testing" ns-sym)
+    (binding [t/report counting-report]
+      (t/test-vars (test-vars-of ns-sym)))))
+
+(def ^:private bad (+ @fail @err))
+(println (str "Ran " (+ @pass @fail @err) " tests-ish assertions: "
+              @pass " pass, " @fail " fail, " @err " error."))
+(println (if (zero? bad) "OK" (str "FAILURES: " bad)))
+(.exit (.-process js/globalThis) (if (pos? bad) 1 0))

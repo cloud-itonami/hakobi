@@ -43,8 +43,11 @@ metaphor 名（運び = carrying/delivery）なので、この冒頭が名乗り
 ## 使い方
 
 ```bash
-nbb --classpath src:test bin/run-tests.cljs hakobi.kernel-test
+nbb --classpath src:test:scripts bin/run-tests.cljs hakobi.kernel-test hakobi.probe-test
 ```
+
+（runner は失敗時に exit 1 — red path 実測済み。nbb の `t/run-tests` は nil を
+返し JVM 式の summary 参照 exit が常に 0 になるため、自前 counting reporter を使う）
 
 ```clojure
 (require '[hakobi.kernel :as k])
