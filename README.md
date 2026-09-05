@@ -27,6 +27,17 @@ metaphor 名（運び = carrying/delivery）なので、この冒頭が名乗り
 | `:double-count-key` 一意 | 同一 segment nonce を二重計上しない | `:rejected-double-count` |
 | `:leakage` ≤ 0.5 | 循環/Sybil トラフィックの割合 | `:rejected-circular-traffic` |
 
+さらに **VDT gate（`hakobi.vdt`、2026-09-05 追加）**: claim が Verifiable
+Delay Token を運び、それが valid で、token の calibrated 最小 latency が
+`:latency-ms-claimed` を超えるなら、claim と proof は両立しない →
+`:rejected-latency-underproof`（二重計上の次、循環 traffic より先に棄却 —
+証明可能な嘘は疑いより強い）。VDT は時間の **下界** を与える: 結託した
+node/receiver が「5ms でした」と署名しても、challenger が T step の
+逐次 hash chain を 40ms で calibrated していれば、5ms では chain が
+作れない。VDF は下界しか出さない（帯域の上界・地理は別 primitive）—
+これは記録済みの正直な限界。VDT の無い claim は untouched（legacy
+fail-open、矛盾したものだけ fail-closed）。
+
 `verification-confidence = measurement-weight × additionality × (1 − leakage)`
 `useful-delivery-score = bytes × confidence` — **`:verified` でなければ 0**。
 
@@ -43,7 +54,7 @@ metaphor 名（運び = carrying/delivery）なので、この冒頭が名乗り
 ## 使い方
 
 ```bash
-nbb --classpath src:test:scripts bin/run-tests.cljs hakobi.kernel-test hakobi.probe-test
+nbb --classpath src:test:scripts bin/run-tests.cljs hakobi.kernel-test hakobi.probe-test hakobi.vdt-test
 ```
 
 （runner は失敗時に exit 1 — red path 実測済み。nbb の `t/run-tests` は nil を
