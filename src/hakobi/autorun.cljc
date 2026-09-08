@@ -7,7 +7,7 @@
   reading the claims (the same G7-style discipline mio's autorun follows:
   deterministic, caller supplies inputs)."
   (:require [clojure.edn :as edn]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [hakobi.kernel :as k]))
 
 (def fs (js/require "node:fs"))
