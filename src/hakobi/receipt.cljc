@@ -17,7 +17,7 @@
   functions, no keys, no I/O. Signing is a caller-injected function.
 
   OBSERVATION + VERIFICATION ONLY. A delivery map, never a market signal."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [hakobi.kernel :as k]
             [hakobi.vdt :as vdt]))
 

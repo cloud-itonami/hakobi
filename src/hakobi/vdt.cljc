@@ -34,7 +34,7 @@
   at the content layer (kernel's BLAKE3-addressed claims), not here.
 
   OBSERVATION + VERIFICATION ONLY. A delivery map, never a market signal."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [hakobi.kernel :as k]))
 
 ;; ── the sequential chain ────────────────────────────────────────────────────

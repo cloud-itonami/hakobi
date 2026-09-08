@@ -41,7 +41,7 @@
         Operators and actors submit; the kernel only decides and accounts.
 
   OBSERVATION + VERIFICATION ONLY. A delivery map, never a market signal."
-  (:require [clojure.string :as str]))
+  (:require [kotoba.lang.text :as str]))
 
 ;; ── thresholds + the measurement-trust ladder ───────────────────────────────
 

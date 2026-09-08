@@ -3,7 +3,7 @@
   proof that :bytes-reward cannot exist through the only path that composes
   a transfer record)."
   (:require [clojure.test :refer [deftest is testing]]
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [hakobi.kernel :as k]
             [hakobi.receipt :as r]))
 
