@@ -12,7 +12,7 @@
   canary rides a delivery-claim window and its verified receipt upgrades the
   claim's measurement-source. What it does NOT do is measure a real network —
   that is the measurement-path ADR's job. OBSERVATION ONLY."
-  (:require [kotoba.lang.text :as str]
+  (:require [clojure.string :as str]
             [hakobi.kernel :as k]))
 
 (defn make-canary
