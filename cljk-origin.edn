@@ -1,0 +1,23 @@
+{:format :kotoba.cljk-origin/v1
+ :renamed-on "2026-09-11"
+ :decision "adr-2609111500-cljk-rename-all-clojure-source (com-junkawasaki/root 90-docs/adr; owner instruction 2026-09-11)"
+ :rule "value = the extension the file had before the rename. A path ending in .clj.cljk or .cljs.cljk kept it in the name because both platform files existed (or the plain target was taken)."
+ :origins
+ {"bin/run-tests.cljk" ".cljs"
+  "scripts/nbb_compat.cljk" ".cljs"
+  "scripts/nbb_compat/babashka/curl.cljk" ".cljs"
+  "scripts/nbb_compat/babashka/fs.cljk" ".cljs"
+  "scripts/nbb_compat/babashka/process.cljk" ".cljs"
+  "scripts/nbb_compat/cheshire/core.cljk" ".cljs"
+  "scripts/nbb_compat/clojure/java/io.cljk" ".cljs"
+  "scripts/nbb_compat/clojure/java/shell.cljk" ".cljs"
+  "scripts/receipt_evidence.cljk" ".cljs"
+  "src/hakobi/autorun.cljk" ".cljc"
+  "src/hakobi/kernel.cljk" ".cljc"
+  "src/hakobi/probe.cljk" ".cljc"
+  "src/hakobi/receipt.cljk" ".cljc"
+  "src/hakobi/vdt.cljk" ".cljc"
+  "test/hakobi/kernel_test.cljk" ".cljc"
+  "test/hakobi/probe_test.cljk" ".cljc"
+  "test/hakobi/receipt_test.cljk" ".cljc"
+  "test/hakobi/vdt_test.cljk" ".cljc"}}

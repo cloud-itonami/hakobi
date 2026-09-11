@@ -37,7 +37,7 @@
     (when (:ok r) (str/trim (:out r)))))
 
 (def suite
-  (let [r (sh! "nbb --classpath src:test:scripts bin/run-tests.cljs hakobi.kernel-test hakobi.probe-test hakobi.vdt-test hakobi.receipt-test")]
+  (let [r (sh! "nbb --classpath src:test:scripts bin/run-tests.cljk hakobi.kernel-test hakobi.probe-test hakobi.vdt-test hakobi.receipt-test")]
     {:ran (:ok r)
      :green (and (:ok r) (str/includes? (:out r) "OK"))
      :tail (str/trim (or (last (filter #(str/includes? % "assertions") (str/split (:out r) "\n"))) ""))}))
