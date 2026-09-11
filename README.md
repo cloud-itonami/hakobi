@@ -54,7 +54,7 @@ fail-open、矛盾したものだけ fail-closed）。
 ## 使い方
 
 ```bash
-nbb --classpath src:test:scripts bin/run-tests.cljk hakobi.kernel-test hakobi.probe-test hakobi.vdt-test
+kbb --backend sci --classpath src:test:scripts bin/run-tests.cljk hakobi.kernel-test hakobi.probe-test hakobi.vdt-test
 ```
 
 （runner は失敗時に exit 1 — red path 実測済み。nbb の `t/run-tests` は nil を
