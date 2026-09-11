@@ -1,8 +1,8 @@
-#!/usr/bin/env nbb
+#!/usr/bin/env kbb
 ;; hakobi test runner — contract: exit 0 iff fail+error == 0 (ADR-2607173000).
 ;;
 ;; Usage (from this repo):
-;;   nbb --classpath src:test:scripts bin/run-tests.cljk hakobi.kernel-test …
+;;   kbb --backend sci --classpath src:test:scripts bin/run-tests.cljk hakobi.kernel-test …
 ;;
 ;; nbb measured gotchas (2026-09-04, red-proven):
 ;;  - `t/run-tests` under nbb prints a summary but RETURNS NIL, and
@@ -20,7 +20,7 @@
 
 (when (empty? argv)
   (binding [*out* *err*]
-    (println "usage: nbb --classpath src:test:scripts bin/run-tests.cljk <ns>…"))
+    (println "usage: kbb --backend sci --classpath src:test:scripts bin/run-tests.cljk <ns>…"))
   (.exit (.-process js/globalThis) 2))
 
 (def ^:private nss (mapv symbol argv))

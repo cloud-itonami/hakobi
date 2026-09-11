@@ -37,7 +37,7 @@
     (when (:ok r) (str/trim (:out r)))))
 
 (def suite
-  (let [r (sh! "nbb --classpath src:test:scripts bin/run-tests.cljk hakobi.kernel-test hakobi.probe-test hakobi.vdt-test hakobi.receipt-test")]
+  (let [r (sh! "kbb --backend sci --classpath src:test:scripts bin/run-tests.cljk hakobi.kernel-test hakobi.probe-test hakobi.vdt-test hakobi.receipt-test")]
     {:ran (:ok r)
      :green (and (:ok r) (str/includes? (:out r) "OK"))
      :tail (str/trim (or (last (filter #(str/includes? % "assertions") (str/split (:out r) "\n"))) ""))}))
@@ -56,7 +56,7 @@
                    "      :proj-rows (count proj)\n"
                    "      :no-sig-cols (not (some #(contains? % \"hakobi/carrier-signature\") proj))})\n")]
     (.writeFileSync fs probe body)
-    (let [r (sh! "nbb --classpath src .receipt-probe.cljs")]
+    (let [r (sh! "kbb --backend sci --classpath src .receipt-probe.cljs")]
       (.unlinkSync fs probe)
       (let [line (last (filter #(str/includes? % "receipts") (str/split (:out r) "\n")))]
         {:ran (:ok r)
