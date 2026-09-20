@@ -43,7 +43,7 @@
      :tail (str/trim (or (last (filter #(str/includes? % "assertions") (str/split (:out r) "\n"))) ""))}))
 
 (defn run-composer-probe []
-  (let [probe (str repo "/.receipt-probe.cljs")
+  (let [probe (str repo "/.receipt-probe.cljk")
         body  (str "(require '[hakobi.kernel :as k] '[hakobi.receipt :as r] '[clojure.edn :as edn])\n"
                    "(def fs2r (js/require \"node:fs\"))\n"
                    "(def claims (edn/read-string (.readFileSync fs2r \"claims/seed.edn\" \"utf8\")))\n"
@@ -56,7 +56,7 @@
                    "      :proj-rows (count proj)\n"
                    "      :no-sig-cols (not (some #(contains? % \"hakobi/carrier-signature\") proj))})\n")]
     (.writeFileSync fs probe body)
-    (let [r (sh! "kbb --backend sci --classpath src .receipt-probe.cljs")]
+    (let [r (sh! "kbb --backend sci --classpath src .receipt-probe.cljk")]
       (.unlinkSync fs probe)
       (let [line (last (filter #(str/includes? % "receipts") (str/split (:out r) "\n")))]
         {:ran (:ok r)
