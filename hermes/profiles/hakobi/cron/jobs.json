@@ -1,0 +1,70 @@
+{
+  "jobs": [
+    {
+      "base_url": "https://api.murakumo.cloud/v1",
+      "context_from": null,
+      "deliver": "local",
+      "enabled": true,
+      "enabled_toolsets": null,
+      "id": "db9a1f6d0a8b",
+      "model": "mishima",
+      "name": "hakobi-verify-heartbeat",
+      "no_agent": false,
+      "prompt": "hakobi-verify-heartbeat: hakobi kernel 検証 heartbeat。差分検知を最初にやる: 前回 state ~/.hermes/profiles/hakobi/cron/hakobi-verify-heartbeat.state.json と比較し、kernel・claims・pin 全て不変なら 差分なし の1行だけ出して終了 (state file 無し=初回として baseline を書いて終了)。変化があれば: (1) superproject ~/github/com-junkawasaki 内 orgs/cloud-itonami/hakobi で nbb --classpath src:test bin/run-tests.cljs hakobi.kernel-test を実行 (checkout が無ければ git merge --ff-only refs/west/main を試し、それも無ければ 検証不能 と報告して捏造しない) (2) nbb --classpath src -e (require quote [hakobi.autorun :as a]) (a/run claims) で autorun 検証 (3) tests/autorun 結果と pin (git -C orgs/cloud-itonami/hakobi rev-parse HEAD vs manifest/west.yml の hakobi revision) を state に記録し、赤い場合は赤い旨を明示。捏造ゼロ: 実行できなかったものは 実行できず と書く。運転のみで kernel 変更・claim 捏造はしない。",
+      "provider": "murakumo",
+      "schedule": {
+        "kind": "cron",
+        "expr": "51 5 * * *",
+        "display": "51 5 * * *"
+      },
+      "script": null,
+      "skill": null,
+      "skills": [],
+      "workdir": null
+    },
+    {
+      "base_url": null,
+      "context_from": null,
+      "deliver": "local",
+      "enabled": true,
+      "enabled_toolsets": null,
+      "id": "495a137d6e80",
+      "model": "qwen3.8-27b-whitehacker",
+      "name": "hakobi-weekly-review",
+      "no_agent": false,
+      "prompt": "hakobi-weekly-review: hakobi kernel 設計論点の週次整理。手順: (1) superproject 90-docs/business/zeta-l5-delivery-observations/ を読み直近の zeta 観測を確認 (無ければ unknown) (2) kernel 設計論点を整理: 測定梯子の運用現実性 / 閾値の network domain 校正 / double-count-key 形状 / 測定経路 ADR に必要な材料 — 各論点に zeta 観測からの根拠か unknown を明記 (捏造ゼロ) (3) 観測記録を ~/.hermes/profiles/hakobi/workspace/ に YYYY-MM-DD-review.md として書く (4) 重要な論点変化があった週のみ superproject で nbb scripts/root-worktree.cljs create hakobi-review --profile docs --include 90-docs/business を実行し 90-docs/business/hakobi-carrier-observations/ に置いて commit/push、gh api repos/com-junkawasaki/root/merges で着地、worktree remove まで完遂。変化が無い週は 着地省略 の1行で終了してよい。運転のみで kernel 変更はしない。",
+      "provider": "kotoba",
+      "schedule": {
+        "kind": "cron",
+        "expr": "37 9 * * 4",
+        "display": "37 9 * * 4"
+      },
+      "script": null,
+      "skill": null,
+      "skills": [],
+      "workdir": null
+    },
+    {
+      "base_url": null,
+      "context_from": null,
+      "deliver": "local",
+      "enabled": true,
+      "enabled_toolsets": null,
+      "id": "a59179cb36e7",
+      "model": "qwen3.8-27b-whitehacker",
+      "name": "hakobi-receipt-evidence",
+      "no_agent": false,
+      "prompt": "hakobi-receipt-evidence: receipt/projection 検証 tick。superproject ~/github/com-junkawasaki の orgs/cloud-itonami/hakobi で nbb scripts/receipt_evidence.cljs を実行し、出力された :suite / :composer / :pin の3点をそのまま報告する (script が判断を持ち、agent は計算しない)。:suite.green が false、または :composer.ran が false、または :pin.fresh? が false のときだけ詳細を報告し、全て true なら 全項目 green の1行で終了。前回 state ~/.hermes/profiles/hakobi/cron/hakobi-receipt-evidence.state.json と比較し差分が無ければ 差分なし の1行で終了 (state file 無し=初回として baseline を書く)。実行できなかったものは 実行できず と書き、捏造しない。運転のみで kernel 変更・claim 捏造はしない。",
+      "provider": "kotoba",
+      "schedule": {
+        "kind": "cron",
+        "expr": "21 0 * * *",
+        "display": "21 0 * * *"
+      },
+      "script": null,
+      "skill": null,
+      "skills": [],
+      "workdir": null
+    }
+  ]
+}
