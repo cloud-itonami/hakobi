@@ -10,7 +10,7 @@
       "model": "mishima",
       "name": "hakobi-verify-heartbeat",
       "no_agent": false,
-      "prompt": "hakobi-verify-heartbeat: hakobi kernel 検証 heartbeat。差分検知を最初にやる: 前回 state ~/.hermes/profiles/hakobi/cron/hakobi-verify-heartbeat.state.json と比較し、kernel・claims・pin 全て不変なら 差分なし の1行だけ出して終了 (state file 無し=初回として baseline を書いて終了)。変化があれば: (1) superproject ~/github/com-junkawasaki 内 orgs/cloud-itonami/hakobi で nbb --classpath src:test bin/run-tests.cljs hakobi.kernel-test を実行 (checkout が無ければ git merge --ff-only refs/west/main を試し、それも無ければ 検証不能 と報告して捏造しない) (2) nbb --classpath src -e (require quote [hakobi.autorun :as a]) (a/run claims) で autorun 検証 (3) tests/autorun 結果と pin (git -C orgs/cloud-itonami/hakobi rev-parse HEAD vs manifest/west.yml の hakobi revision) を state に記録し、赤い場合は赤い旨を明示。捏造ゼロ: 実行できなかったものは 実行できず と書く。運転のみで kernel 変更・claim 捏造はしない。",
+      "prompt": "hakobi-verify-heartbeat: hakobi kernel 検証 heartbeat。差分検知を最初にやる: 前回 state ~/.hermes/profiles/hakobi/cron/hakobi-verify-heartbeat.state.json と比較し、kernel・claims・pin 全て不変なら 差分なし の1行だけ出して終了 (state file 無し=初回として baseline を書いて終了)。変化があれば: (1) superproject ~/github/com-junkawasaki/root 内 orgs/cloud-itonami/hakobi で nbb --classpath src:test bin/run-tests.cljs hakobi.kernel-test を実行 (checkout が無ければ git merge --ff-only refs/west/main を試し、それも無ければ 検証不能 と報告して捏造しない) (2) nbb --classpath src -e (require quote [hakobi.autorun :as a]) (a/run claims) で autorun 検証 (3) tests/autorun 結果と pin (git -C orgs/cloud-itonami/hakobi rev-parse HEAD vs manifest/west.yml の hakobi revision) を state に記録し、赤い場合は赤い旨を明示。捏造ゼロ: 実行できなかったものは 実行できず と書く。運転のみで kernel 変更・claim 捏造はしない。",
       "provider": "murakumo",
       "schedule": {
         "kind": "cron",
@@ -54,7 +54,7 @@
       "model": null,
       "name": "hakobi-receipt-evidence",
       "no_agent": false,
-      "prompt": "hakobi-receipt-evidence: receipt/projection 検証 tick。superproject ~/github/com-junkawasaki の orgs/cloud-itonami/hakobi で nbb scripts/receipt_evidence.cljs を実行し、出力された :suite / :composer / :pin の3点をそのまま報告する (script が判断を持ち、agent は計算しない)。:suite.green が false、または :composer.ran が false、または :pin.fresh? が false のときだけ詳細を報告し、全て true なら 全項目 green の1行で終了。前回 state ~/.hermes/profiles/hakobi/cron/hakobi-receipt-evidence.state.json と比較し差分が無ければ 差分なし の1行で終了 (state file 無し=初回として baseline を書く)。実行できなかったものは 実行できず と書き、捏造しない。運転のみで kernel 変更・claim 捏造はしない。",
+      "prompt": "hakobi-receipt-evidence: receipt/projection 検証 tick。superproject ~/github/com-junkawasaki/root の orgs/cloud-itonami/hakobi で nbb scripts/receipt_evidence.cljs を実行し、出力された :suite / :composer / :pin の3点をそのまま報告する (script が判断を持ち、agent は計算しない)。:suite.green が false、または :composer.ran が false、または :pin.fresh? が false のときだけ詳細を報告し、全て true なら 全項目 green の1行で終了。前回 state ~/.hermes/profiles/hakobi/cron/hakobi-receipt-evidence.state.json と比較し差分が無ければ 差分なし の1行で終了 (state file 無し=初回として baseline を書く)。実行できなかったものは 実行できず と書き、捏造しない。運転のみで kernel 変更・claim 捏造はしない。",
       "provider": null,
       "schedule": {
         "kind": "cron",
